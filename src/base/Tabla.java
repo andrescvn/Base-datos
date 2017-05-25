@@ -282,7 +282,6 @@ public class Tabla extends javax.swing.JFrame {
         Statement stmt = null;
         try {
             c = DriverManager.getConnection("jdbc:sqlite:test.db");
-            c.setAutoCommit(false);
             System.out.println("Opened database successfully");
             stmt = c.createStatement();
             String sql = "INSERT INTO COMPANY (ID,Nombre,Años,Direcion,Salario)"
@@ -298,7 +297,6 @@ public class Tabla extends javax.swing.JFrame {
                     + ");";
             stmt.executeUpdate(sql);
             stmt.close();
-            c.commit();
         } catch (SQLException ex) {
             Logger.getLogger(Tabla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -309,13 +307,14 @@ public class Tabla extends javax.swing.JFrame {
         Connection c = null;
         Statement stmt = null;
         try {
-            String sql = "UPDATE COMPANY set"
-                    + JOptionPane.showInputDialog("Campo")
+             c = DriverManager.getConnection("jdbc:sqlite:test.db");
+             stmt = c.createStatement();
+            String sql = "UPDATE COMPANY set "
+                    + JOptionPane.showInputDialog("Campo a cambiar")
                     + " = " + JOptionPane.showInputDialog("Valor")
                     + " where ID = "
                     + JOptionPane.showInputDialog("ID") + ";";
             stmt.executeUpdate(sql);
-            c.commit();
             stmt.close();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
